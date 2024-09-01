@@ -68,6 +68,7 @@ impl ModuleManager {
         // - Note the pass by reference of `name` variable to the `self.modules.get()` function.
         // - Note the user of clone() in the `name` variable to the `self.modules.insert()` function.
         
+        let failed = Vec::<String>::new();
         // let failed = paths
         //     .iter()
         //     .filter_map(|path| {
@@ -92,7 +93,6 @@ impl ModuleManager {
         //         }
         //     })
         //     .collect::<Vec<_>>();
-        let failed = Vec::<String>::new();
 
         if !failed.is_empty() {
             log::error!("Failed to load modules: [{}]", failed.join(", "));
