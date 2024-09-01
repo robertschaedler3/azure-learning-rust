@@ -88,11 +88,6 @@ pub async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible> 
         Some(err) => {
             log::error!("{}", err);
             match err {
-                // --- LAB 4 ---
-                // - Uncomment to add the Error::ComponentNotFound variant to the match arm.
-                // Error::ComponentNotFound(component) => {
-                //     (StatusCode::NOT_FOUND, format!("Component not found: {}", component))
-                // }
                 Error::Json(err) => (StatusCode::BAD_REQUEST, err.to_string()),
                 Error::Null(err) => (StatusCode::BAD_REQUEST, err.to_string()),
                 Error::Io(err) => (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()),

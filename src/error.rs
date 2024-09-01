@@ -7,11 +7,6 @@ pub enum Error {
     #[error(transparent)]
     Io(#[from] std::io::Error),
 
-    // --- LAB 4 ---
-    // - Uncomment to extend the error enum to include a new variant for the `ComponentNotFound` error.
-    // #[error("Unable to find component: {0}")]
-    // ComponentNotFound(String),
-
     #[error(transparent)]
     Library(#[from] libloading::Error),
 

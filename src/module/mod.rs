@@ -106,14 +106,6 @@ impl ModuleManager {
             .find(|module| module.meta.components.contains(&component.to_string()))
             .ok_or(Error::Errno(Errno(-1)))?;
 
-        // --- LAB 4 ---
-        // - Uncomment the following line to return the ComponentNotFound error if the component is not found
-        // let module = self
-        //     .modules
-        //     .values()
-        //     .find(|module| module.meta.components.contains(&component.to_string()))
-        //     .ok_or(Error::ComponentNotFound(component.to_string()))?;
-
         Ok(module.get(component, object)?)
     }
 
@@ -125,14 +117,6 @@ impl ModuleManager {
             .values()
             .find(|module| module.meta.components.contains(&component.to_string()))
             .ok_or(Error::Errno(Errno(-1)))?;
-
-        // --- LAB 4 ---
-        // - Uncomment the following line to return the ComponentNotFound error if the component is not found
-        // let module = self
-        //     .modules
-        //     .values()
-        //     .find(|module| module.meta.components.contains(&component.to_string()))
-        //     .ok_or(Error::ComponentNotFound(component.to_string()))?;
 
         module.set(component, object, payload)
     }

@@ -26,8 +26,6 @@ use platform::{handlers, routes};
 #[tokio::main]
 async fn main() -> Result<()> {
     
-    // --- LAB 4 ---
-    // - Add a `?` operator to the call to `init_logger()` to propagate any errors that may occur
     init_logger();
 
     // let path = std::path::Path::new("/run/osconfig/mpid.sock");
@@ -114,44 +112,5 @@ pub fn init_logger() {
     let _encoder = Box::new(PatternEncoder::new(
         "[{date(%Y-%m-%d %H:%M:%S)}] [{module}] [{highlight({level})}] {message}\n",
     ));
-
     
-    // --- LAB 4 ---
-    // - Uncomment the following code block to enable logging to a rolling file appender (implementation does not need changing)
-    // - Introduce a return type that can capture all errors originating from this function
-    
-    // let stdout = ConsoleAppender::builder()
-    //     .target(Target::Stdout)
-    //     .encoder(encoder.clone())
-    //     .build();
-
-    // Logging to rolling file:
-    // - Once the log file reaches 128kb, it will be rolled over.
-    // - Keep 1 backup file.
-    // let size_trigger = SizeTrigger::new(128 * 1024);
-    // let fixed_window_roller =
-    //     FixedWindowRoller::builder().build("/var/log/osconfig-platform{}.log.bak", 1)?;
-    // let policy = Box::new(CompoundPolicy::new(
-    //     Box::new(size_trigger),
-    //     Box::new(fixed_window_roller),
-    // ));
-
-    // let logfile = RollingFileAppender::builder()
-    //     .append(true)
-    //     .encoder(encoder)
-    //     .build(file_path, policy)?;
-
-    // let config = log4rs::config::Config::builder()
-    //     .appender(Appender::builder().build("logfile", Box::new(logfile)))
-    //     .appender(Appender::builder().build("stdout", Box::new(stdout)))
-    //     .build(
-    //         Root::builder()
-    //             .appender("logfile")
-    //             .appender("stdout")
-    //             .build(level),
-    //     )?;
-
-    // let _ = log4rs::init_config(config)?;
-
-    // Ok(())
 }
