@@ -18,6 +18,7 @@ pub type Platform = Arc<Mutex<ModuleManager>>;
 pub fn init() -> Result<Platform> {
     log::info!("{}", PLATFORM_CLIENT);
 
-    let platform = ModuleManager::new("/usr/lib/osconfig")?;
+    let mut platform = ModuleManager::new("/usr/lib/osconfig")?;
+    platform.reload()?;
     Ok(Arc::new(Mutex::new(platform)))
 }
