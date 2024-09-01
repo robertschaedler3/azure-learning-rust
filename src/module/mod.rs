@@ -1,3 +1,5 @@
+#![cfg_attr(debug_assertions, allow(dead_code, unused_imports, unused_variables))]
+
 use std::{
     collections::HashMap,
     path::{Path, PathBuf},
@@ -60,30 +62,37 @@ impl ModuleManager {
 
         paths.sort();
 
-        let failed = paths
-            .iter()
-            .filter_map(|path| {
-                let name = path.file_stem().unwrap().to_str().unwrap().to_string();
-                match Module::init(path) {
-                    Ok(module) => {
-                        // Check if a module with the same name has already been loaded,
-                        // keep the one with the greatest version number.
-                        if let Some(existing) = self.modules.get(&name) {
-                            if module.meta.version > existing.meta.version {
-                                self.modules.insert(name.clone(), module);
-                            }
-                        } else {
-                            self.modules.insert(name.clone(), module);
-                        }
-                        None
-                    }
-                    Err(err) => {
-                        log::error!("{}", err);
-                        Some(name)
-                    }
-                }
-            })
-            .collect::<Vec<_>>();
+        // --- LAB 1 ---
+        // - Uncomment the following code block to load modules from `/usr/lib/osconfig` and insert them into the `modules` HashMap.
+        // - Note the move of `path` variable contents to the `Module::init()` function.
+        // - Note the pass by reference of `name` variable to the `self.modules.get()` function.
+        // - Note the user of clone() in the `name` variable to the `self.modules.insert()` function.
+        
+        // let failed = paths
+        //     .iter()
+        //     .filter_map(|path| {
+        //         let name = path.file_stem().unwrap().to_str().unwrap().to_string();
+        //         match Module::init(path) {
+        //             Ok(module) => {
+        //                 // Check if a module with the same name has already been loaded,
+        //                 // keep the one with the greatest version number.
+        //                 if let Some(existing) = self.modules.get(&name) {
+        //                     if module.meta.version > existing.meta.version {
+        //                         self.modules.insert(name.clone(), module);
+        //                     }
+        //                 } else {
+        //                     self.modules.insert(name.clone(), module);
+        //                 }
+        //                 None
+        //             }
+        //             Err(err) => {
+        //                 log::error!("{}", err);
+        //                 Some(name)
+        //             }
+        //         }
+        //     })
+        //     .collect::<Vec<_>>();
+        let failed = Vec::<String>::new();
 
         if !failed.is_empty() {
             log::error!("Failed to load modules: [{}]", failed.join(", "));
