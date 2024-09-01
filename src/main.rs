@@ -1,3 +1,4 @@
+#![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
 use anyhow::{Context, Result};
 use log::LevelFilter;
 use log4rs::{
@@ -24,7 +25,10 @@ use platform::{handlers, routes};
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    init_logger()?;
+    
+    // --- LAB 4 ---
+    // - Add a `?` operator to the call to `init_logger()` to propagate any errors that may occur
+    init_logger();
 
     // let path = std::path::Path::new("/run/osconfig/mpid.sock");
     let path = std::path::Path::new("/tmp/osc-platform.sock");
@@ -89,15 +93,15 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
-pub fn init_logger() -> anyhow::Result<()> {
-    let file_path = "/var/log/osconfig-platform.log";
+pub fn init_logger() {
+    let _file_path = "/var/log/osconfig-platform.log";
 
     // Get the RUST_LOG environment variable and set the level filter accordingly.
     // If it is not set, default to "info"
     let rust_log = std::env::var("RUST_LOG")
-        .unwrap_or_else(|_| "info".to_string())
+        .unwrap_or_else(|_| "debug".to_string())
         .to_lowercase();
-    let level = match rust_log.as_str() {
+    let _level = match rust_log.as_str() {
         "trace" => LevelFilter::Trace,
         "debug" => LevelFilter::Debug,
         "warn" => LevelFilter::Warn,
@@ -107,42 +111,47 @@ pub fn init_logger() -> anyhow::Result<()> {
     };
 
     // Pattern: https://docs.rs/log4rs/*/log4rs/encode/pattern/index.html
-    let encoder = Box::new(PatternEncoder::new(
+    let _encoder = Box::new(PatternEncoder::new(
         "[{date(%Y-%m-%d %H:%M:%S)}] [{module}] [{highlight({level})}] {message}\n",
     ));
 
-    let stdout = ConsoleAppender::builder()
-        .target(Target::Stdout)
-        .encoder(encoder.clone())
-        .build();
+    
+    // --- LAB 4 ---
+    // - Uncomment the following code block to enable logging to a rolling file appender (implementation does not need changing)
+    // - Introduce a return type that can capture all errors originating from this function
+    
+    // let stdout = ConsoleAppender::builder()
+    //     .target(Target::Stdout)
+    //     .encoder(encoder.clone())
+    //     .build();
 
     // Logging to rolling file:
     // - Once the log file reaches 128kb, it will be rolled over.
     // - Keep 1 backup file.
-    let size_trigger = SizeTrigger::new(128 * 1024);
-    let fixed_window_roller =
-        FixedWindowRoller::builder().build("/var/log/osconfig-platform{}.log.bak", 1)?;
-    let policy = Box::new(CompoundPolicy::new(
-        Box::new(size_trigger),
-        Box::new(fixed_window_roller),
-    ));
+    // let size_trigger = SizeTrigger::new(128 * 1024);
+    // let fixed_window_roller =
+    //     FixedWindowRoller::builder().build("/var/log/osconfig-platform{}.log.bak", 1)?;
+    // let policy = Box::new(CompoundPolicy::new(
+    //     Box::new(size_trigger),
+    //     Box::new(fixed_window_roller),
+    // ));
 
-    let logfile = RollingFileAppender::builder()
-        .append(true)
-        .encoder(encoder)
-        .build(file_path, policy)?;
+    // let logfile = RollingFileAppender::builder()
+    //     .append(true)
+    //     .encoder(encoder)
+    //     .build(file_path, policy)?;
 
-    let config = log4rs::config::Config::builder()
-        .appender(Appender::builder().build("logfile", Box::new(logfile)))
-        .appender(Appender::builder().build("stdout", Box::new(stdout)))
-        .build(
-            Root::builder()
-                .appender("logfile")
-                .appender("stdout")
-                .build(level),
-        )?;
+    // let config = log4rs::config::Config::builder()
+    //     .appender(Appender::builder().build("logfile", Box::new(logfile)))
+    //     .appender(Appender::builder().build("stdout", Box::new(stdout)))
+    //     .build(
+    //         Root::builder()
+    //             .appender("logfile")
+    //             .appender("stdout")
+    //             .build(level),
+    //     )?;
 
-    let _ = log4rs::init_config(config)?;
+    // let _ = log4rs::init_config(config)?;
 
-    Ok(())
+    // Ok(())
 }
