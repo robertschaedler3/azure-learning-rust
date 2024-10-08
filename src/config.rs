@@ -28,21 +28,8 @@ pub struct Config {
     #[serde(deserialize_with = "bool_from_int")]
     pub _full_logging: bool,
 
-    pub reported: Reported,
-    // #[serde(deserialize_with = "bool_from_int")]
-    // pub git_management: bool,
-
-    // pub repository_url: Option<String>,
-    // pub repository_branch: Option<String>,
-
-    // #[serde(deserialize_with = "bool_from_int")]
-    // pub local_management: bool,
-
-    // pub model_version: u32,
-    // pub iothub_protocol: IotHubProtocol,
-
-    // #[serde(rename = "ReportingIntervalSeconds")]
-    // pub reporting_interval: u32,
+    /// Future exercise: Add reported and desired configuration.
+    pub _reported: Reported,
 }
 
 /// The networking protocol that OSConfig uses to connect to the Azure IoTHub.
@@ -55,7 +42,7 @@ pub enum IotHubProtocol {
     MqttWS = 2,
 }
 
-#[derive(Default)]
+#[derive(Default, Debug, PartialEq)]
 pub struct Reported(pub HashMap<String, Vec<String>>);
 
 #[derive(Deserialize)]
@@ -74,14 +61,11 @@ impl<'de> Deserialize<'de> for Reported {
         D: Deserializer<'de>,
     {
         let pairs = Vec::<Pair>::deserialize(deserializer)?;
-        let reported = pairs
-            .into_iter()
-            .fold(HashMap::new(), |mut acc, pair| {
-                let objects = acc.entry(pair.component).or_insert_with(Vec::new);
-                objects.push(pair.object);
-                acc
-            })
-            .into();
+        let reported = pairs.into_iter().fold(HashMap::new(), |mut acc, pair| {
+            let objects: &mut Vec<String> = acc.entry(pair.component).or_default();
+            objects.push(pair.object);
+            acc
+        });
         Ok(Reported(reported))
     }
 }
@@ -97,5 +81,24 @@ where
             Unexpected::Unsigned(other as u64),
             &"zero or one",
         )),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+
+    #[test]
+    fn test_reported() {
+        let reported = r#"[{"ComponentName":"component1","ObjectName":"object1"},{"ComponentName":"component1","ObjectName":"object2"},{"ComponentName":"component2","ObjectName":"object3"}]"#;
+        let reported = serde_json::from_str::<Reported>(reported).unwrap();
+        let mut expected = HashMap::new();
+        expected.insert(
+            "component1".to_string(),
+            vec!["object1".to_string(), "object2".to_string()],
+        );
+        expected.insert("component2".to_string(), vec!["object3".to_string()]);
+        assert_eq!(Reported(expected), reported);
     }
 }
