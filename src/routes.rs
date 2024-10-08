@@ -47,18 +47,6 @@ fn desired(
         )
 }
 
-// fn reported_all(
-//     platform: Platform,
-// ) -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
-//     // TODO
-// }
-
-// fn desired_all(
-//     platform: Platform,
-// ) -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
-//     // TODO
-// }
-
 fn with_platform(
     platform: Platform,
 ) -> impl Filter<Extract = (Platform,), Error = std::convert::Infallible> + Clone {

@@ -1,6 +1,5 @@
 mod config;
 mod error;
-mod models;
 mod module;
 
 pub mod handlers;
