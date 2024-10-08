@@ -28,7 +28,6 @@ async fn main() -> Result<()> {
     
     init_logger();
 
-    // let path = std::path::Path::new("/run/osconfig/mpid.sock");
     let path = std::path::Path::new("/tmp/osc-platform.sock");
 
     if path.exists() {
@@ -46,14 +45,12 @@ async fn main() -> Result<()> {
     let mut sigterm = signal(SignalKind::terminate())?;
     let mut sighup = signal(SignalKind::hangup())?;
 
-    // TODO: initialize the platform asynchronously (server needs to be available ASAP)
     let platform = platform::init()?;
-
     {
         let platform = platform.clone();
 
         tokio::spawn(async move {
-            while let Some(_) = sighup.recv().await {
+            while sighup.recv().await.is_some() {
                 log::debug!("Received SIGHUP, reloading platform");
 
                 let mut platform = platform.lock().unwrap();
