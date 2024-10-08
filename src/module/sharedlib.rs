@@ -49,7 +49,7 @@ where
     pub unsafe fn new<P: AsRef<Path>>(path: P) -> Result<Self, Error> {
         let lib = LibUnsafe::new(path.as_ref())?;
         let inner = TLib::from(lib);
-        Ok(LibTracked { inner: inner })
+        Ok(LibTracked { inner })
     }
 
     /// Finds and returns a function symbol of the shared library.
@@ -68,20 +68,17 @@ impl<T, TLib> FuncTracked<T, TLib> {
     /// Creates a new [FuncTracked](struct.FuncTracked.html).
     /// This should only be called within the library.
     fn new(func: FuncUnsafe<T>, lib: TLib) -> Self {
-        FuncTracked {
-            func: func,
-            lib: lib,
-        }
+        FuncTracked { func, lib }
     }
 }
 
 impl<T: Copy> Symbol<T> for FuncUnsafe<T> {
     unsafe fn get(&self) -> T {
-        self.clone()
+        *self
     }
 }
 
-impl <T: Copy, TLib> Symbol<T> for FuncTracked<T, TLib> {
+impl<T: Copy, TLib> Symbol<T> for FuncTracked<T, TLib> {
     unsafe fn get(&self) -> T {
         self.func
     }
