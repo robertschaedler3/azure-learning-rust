@@ -7,7 +7,8 @@ use adapter::{Adapter, ModuleAdapter};
 use meta::{Lifetime, Metadata};
 
 use crate::{
-    config::{self, Config}, Error, Result
+    config::{self, Config},
+    Error, Result,
 };
 
 mod adapter;
@@ -27,7 +28,7 @@ pub struct Module<T: Adapter = ModuleAdapter> {
 pub struct ModuleManager {
     path: PathBuf,
     modules: HashMap<String, Module>,
-    pub(crate) config: Config,
+    pub(crate) _config: Config,
 }
 
 impl ModuleManager {
@@ -36,7 +37,7 @@ impl ModuleManager {
         Ok(Self {
             path: path.as_ref().to_path_buf(),
             modules: HashMap::new(),
-            config,
+            _config: config,
         })
     }
 
@@ -105,7 +106,7 @@ impl ModuleManager {
             .find(|module| module.meta.components.contains(&component.to_string()))
             .ok_or(Error::ComponentNotFound(component.to_string()))?;
 
-        Ok(module.get(component, object)?)
+        module.get(component, object)
     }
 
     pub fn set(&self, component: &str, object: &str, payload: &Payload) -> Result<()> {

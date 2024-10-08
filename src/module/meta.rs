@@ -134,8 +134,8 @@ mod tests {
         test_version_cmp("1.0.0.0", "1.0.1.0", Ordering::Less);
         test_version_cmp("1.0.0.0", "1.1.0.0", Ordering::Less);
 
-        test_version_cmp( "1.0.0.1", "1.0.0.0", Ordering::Greater);
-        test_version_cmp( "1.0.1.0", "1.0.0.0", Ordering::Greater);
-        test_version_cmp( "1.1.0.0", "1.0.0.0", Ordering::Greater);
+        test_version_cmp("1.0.0.1", "1.0.0.0", Ordering::Greater);
+        test_version_cmp("1.0.1.0", "1.0.0.0", Ordering::Greater);
+        test_version_cmp("1.1.0.0", "1.0.0.0", Ordering::Greater);
     }
 }
