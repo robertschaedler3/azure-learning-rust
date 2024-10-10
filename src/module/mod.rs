@@ -68,7 +68,7 @@ impl ModuleManager {
         // - Note the move of `path` variable contents to the `Module::init()` function.
         // - Note the pass by reference of `name` variable to the `self.modules.get()` function.
         // - Note the user of clone() in the `name` variable to the `self.modules.insert()` function.
-        
+
         let failed = Vec::<String>::new();
         // let failed = paths
         //     .iter()
@@ -178,4 +178,3 @@ impl<T: Adapter> Module<T> {
         }
     }
 }
-

@@ -25,7 +25,6 @@ use platform::{handlers, routes};
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    
     init_logger();
 
     let path = std::path::Path::new("/tmp/osc-platform.sock");
@@ -109,5 +108,4 @@ pub fn init_logger() {
     let _encoder = Box::new(PatternEncoder::new(
         "[{date(%Y-%m-%d %H:%M:%S)}] [{module}] [{highlight({level})}] {message}\n",
     ));
-    
 }
