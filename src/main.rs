@@ -25,7 +25,6 @@ use platform::{handlers, routes};
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    
     // --- LAB 4 ---
     // - Add a `?` operator to the call to `init_logger()` to propagate any errors that may occur
     init_logger();
@@ -112,11 +111,10 @@ pub fn init_logger() {
         "[{date(%Y-%m-%d %H:%M:%S)}] [{module}] [{highlight({level})}] {message}\n",
     ));
 
-    
     // --- LAB 4 ---
     // - Uncomment the following code block to enable logging to a rolling file appender (implementation does not need changing)
     // - Introduce a return type that can capture all errors originating from this function
-    
+
     // let stdout = ConsoleAppender::builder()
     //     .target(Target::Stdout)
     //     .encoder(encoder.clone())
