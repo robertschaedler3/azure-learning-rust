@@ -79,15 +79,14 @@ impl Adapter for ModuleAdapter {
     }
 
     fn get(&self, component: &str, object: &str) -> Result<serde_json::Value, Error> {
-        
         // --- LAB 2 ---
         // - Uncomment the following code block to implement the get function
         // - Note the use of CString::new to convert the component and object strings to CStrings
         // - Note the use of call_get to call the get function from the shared library
         // - Note the use of serde_json::from_str to convert the payload to a serde_json::Value
-        
+
         let payload = "{}".to_string();
-        
+
         // let component = CString::new(component)?;
         // let object = CString::new(object)?;
         // let mut payload: JsonString = std::ptr::null_mut();
