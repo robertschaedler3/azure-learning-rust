@@ -180,7 +180,7 @@ mod tests {
     // - Uncomment to implement the `TestAdapter` struct.
     // #[derive(Clone)]
     // struct TestAdapter;
-    
+
     // - Uncomment to Implement the `Adapter` trait for `TestAdapter`.
     // impl Adapter for TestAdapter {
     //     fn load<P: AsRef<Path>>(_path: P) -> Result<Self> {
