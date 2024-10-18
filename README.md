@@ -2,7 +2,18 @@
 
 This repository helps new Rust developers understand core Rust concepts through labs. Each lab has comments that explain different Rust concepts through examples. 
 
-The labs culminate in a functional Unix Domain Socket based service that dynamically loads and invokes OS modules from the OSConfig repository, used for locally managing Linux Edge devices. 
+## Lab 1 topics
+
+
+## Lab 1 instructions
+- Uncomment the code block in `\src\module\mod.rs` to load modules from `/usr/lib/osconfig` and insert them into the `modules` HashMap.
+  - Note the move of `path` variable contents to the `Module::init()` function.
+  - Note the pass by reference of `name` variable to the `self.modules.get()` function.
+  - Note the user of clone() in the `name` variable to the `self.modules.insert()` function.
+
+
+## Dev note
+Labs 1-4 are learning labs that do not provide fully end-to-end functionality. The labs culminate in a functional Unix Domain Socket based service that dynamically loads and invokes OS modules from the OSConfig repository, used for locally managing Linux Edge devices. 
 
 To run the final lab E2E, here are the steps (tested on Ubuntu 22.04 in WSL2):
 - Clone and configure the Azure/azure-osconfig repository
