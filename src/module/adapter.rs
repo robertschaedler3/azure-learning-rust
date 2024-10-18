@@ -85,6 +85,8 @@ impl Adapter for ModuleAdapter {
         // - Note the use of call_get to call the get function from the shared library
         // - Note the use of serde_json::from_str to convert the payload to a serde_json::Value
 
+        // This `payload` variable will get shadowed by the mutable payload variable below 
+        // (after the line below is uncommented)
         let payload = "{}".to_string();
 
         // let component = CString::new(component)?;
